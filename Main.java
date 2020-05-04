@@ -68,6 +68,7 @@ public class Main {
     public static void main(String[] args){
         Scanner kb = new Scanner(System.in);
         //MemoryManagement mm = new MemoryManagement();
+        int algPolicy = 0;
 
         System.out.println("What is the size of your memory?");
         int memSize = kb.nextInt();
@@ -83,8 +84,9 @@ public class Main {
             System.out.println("1. Best-Fit");
             System.out.println("2. First-Fit");
             System.out.println("3. Worst-Fit");
+            algPolicy = kb.nextInt();
         }
-        int algPolicy = kb.nextInt();
+       
 
         if(memPolicy == 1){
           //  mm.VSP(algPolicy);
