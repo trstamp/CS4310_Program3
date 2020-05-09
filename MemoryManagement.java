@@ -3,7 +3,15 @@ public class MemoryManagement {
     Process pr = new Process();
 
     public void VSP(int policy){
-        
+        if(policy == 1){
+            
+        }
+        else if(policy == 2){
+
+        }
+        else{
+
+        }
     }
 
     public void Paging(){
@@ -11,7 +19,15 @@ public class MemoryManagement {
     }
 
     public void Segmentation(int policy){
+        if(policy == 1){
+            
+        }
+        else if(policy == 2){
 
+        }
+        else{
+
+        }
     }
 
     public void BestFit(){
