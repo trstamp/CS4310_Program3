@@ -12,7 +12,23 @@ public class Main {
         process.printProcess();
         //add process to queue
     }
+    
+    public void VSP(int policy){
+        if(policy == 1){}
+        else if(policy == 2){}
+        else{}
+    }
 
+    public void Paging(){
+        
+    }
+
+    public void Segmentation(int policy){
+        if(policy == 1){}
+        else if(policy == 2){}
+        else{}
+    }
+    
     public static void readFile(File file){
 
         int numberOfProcesses;
