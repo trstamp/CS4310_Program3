@@ -127,9 +127,17 @@ public class Main {
 
     }
 
-    public void FirstFit(){
+   public void FirstFit(){
         //Iterate in a for loop and in an array and as soon as you find
         //a space that fits the requested size, choose it
+        for(int i = 0; i < processArray.length; i++){
+            for(int j = 0; j < memSize.length; j++){
+                if(processArray[i] < memSize[j]){
+                    memSize[j] -= processArray[i];
+                    break;
+                }
+            }
+        }
 
     }
 
@@ -137,7 +145,15 @@ public class Main {
         //Iterate in a for loop in every spot in an array.
         //The memory size with the largest value will go in the spot that
         //has the highest value.
-
-    }
+        int largestIndex = -1;
+        for(int i = 0; i < processArray.length; i++){
+            for(int j = 0; j < memSize.length; j++) {
+                if (j > 0){
+                    if(memSize[j] > memSize[j-1]) {
+                        largestIndex = j;
+                    }
+                }
+            }
+        }
 
 }
