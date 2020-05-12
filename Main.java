@@ -124,9 +124,28 @@ public class Main {
     public void BestFit(){
         //Iterate through all indices and find the index value that
         //is closest to the requested size
-
+        int bestIndex = -1;
+        int difference = 0;
+        int newdif = 0;
+        for(int i = 0; i < processArray.length; i++){
+            for(int j = 0; j < memSize.length; j++){
+                difference = processArray[i] - memSize[j];
+                if(memSize[j] > processArray[i]){
+                    difference = memSize[j] - processArray[i];
+                    if(j == 0){
+                        newdif = difference;
+                        bestIndex = j;
+                    }
+                    else{
+                        if(memSize[j] - processArray[i] > 0 && memSize[j] - processArray[i] < difference){
+                            bestIndex = j;
+                        }
+                    }
+                }
+            }
+        }
     }
-
+    
    public void FirstFit(){
         //Iterate in a for loop and in an array and as soon as you find
         //a space that fits the requested size, choose it
