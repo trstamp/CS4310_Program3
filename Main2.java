@@ -27,56 +27,275 @@ public class Main {
 
         Process[] beingProcessedArray = new Process[processArray.length];
 
+        //filewriter exitWrite
+        //if policy is 1 vsp_best.out
+
         int timer = 0;
+        int memSizeLeft = memSize;
         boolean finished = false;
         //add first on queue to process array slot 0
 
-        if(algPolicy == 1) {
+        if(algPolicy == 1) { //vsp first fit
 
-            while (finished = false) {
+            beingProcessedArray[0] = processArray[0];
+            processArray[0] = null;
+            timer += 100;
+            //write to file that first process enters memory
 
-                //algorithm to place in memory
-                //subtract 100 from all in process array
-                for (int j = 0; j < processArray.length; j++) {
+            while (finished == false || timer == 100000) {
 
+                for(int i = 0; i < beingProcessedArray.length; i++){
+
+                    if(beingProcessedArray[i] != null){
+
+                        beingProcessedArray[i].oneTimeUnit();
+
+                        if(beingProcessedArray[i].processLife == 0){
+
+                            beingProcessedArray[i] = null;
+                            //print that this process left memory to file
+                        }
+
+                    }
                 }
 
-                if (processArray.length == 0) {
+                for (int j = 0; j < processArray.length; j++) {
 
-                    printFile();
+                    if(processArray[j] != null){
+                        if(processArray[j].arrivalTime == 0){
+
+                            //add this to memory array
+                            processArray[j] = null;
+                            //print that this was removed from the queue
+                        } else {
+
+                            processArray[j].arrivalTimeUnit();
+                        }
+
+                    }
 
                 }
 
                 timer += 100;
 
             }
-        } if(algPolicy == 2){}
-        if (algPolicy == 3) {}
+        } if(algPolicy == 2){ //vsp best fit algorithmn
+
+            beingProcessedArray[0] = processArray[0];
+            System.out.println("Process Number "+processArray[0].processNumber+" has been put in memory slot: 1 with MemSize: "+processArray[0].memTotal);
+            memSizeLeft -= processArray[0].memTotal;
+            processArray[0] = null;
+            timer += 100;
+
+            //write to file that first process enters memory
+
+            while (finished == false || timer == 100000) {
+
+                for(int i = 0; i < beingProcessedArray.length; i++){
+
+                    if(beingProcessedArray[i] != null){
+
+                        beingProcessedArray[i].oneTimeUnit();
+
+                        if(beingProcessedArray[i].processLife == 0){
+
+                            System.out.println("Process Number "+beingProcessedArray[0].processNumber+" has finished.");
+                            beingProcessedArray[i] = null;
+
+                            //print that this process left memory to file
+                        }
+
+                    }
+                }
+
+                for (int j = 0; j < processArray.length; j++) {
+
+                    if(processArray[j] != null){
+                        if(processArray[j].arrivalTime == 0){
+
+                            //add this to memory array
+                            System.out.println("Process Number "+processArray[j].processNumber+" has been put into memory slot: ");
+                            processArray[j] = null;
+
+                            //print that this was removed from the queue
+                        } else {
+
+                            processArray[j].arrivalTimeUnit();
+                        }
+
+                    }
+
+                }
+
+                timer += 100;
+
+
+
+
+            }
+        if (algPolicy == 3) { //vsp worst fit algorithm
+
+            beingProcessedArray[0] = processArray[0];
+            processArray[0] = null;
+            timer += 100;
+            //write to file that first process enters memory
+
+            while (finished == false || timer == 100000) {
+
+                for (int i = 0; i < beingProcessedArray.length; i++) {
+
+                    if (beingProcessedArray[i] != null) {
+
+                        beingProcessedArray[i].oneTimeUnit();
+
+                        if (beingProcessedArray[i].processLife == 0) {
+
+                            beingProcessedArray[i] = null;
+                            //print that this process left memory to file
+                        }
+
+                    }
+                }
+
+
+                for (int j = 0; j < processArray.length; j++) {
+
+                    if (processArray[j] != null) {
+                        if (processArray[j].arrivalTime == 0) {
+
+                            //add this to memory array
+                            processArray[j] = null;
+                            //print that this was removed from the queue
+                        } else {
+
+                            processArray[j].arrivalTimeUnit();
+                        }
+
+                    }
+
+                }
+
+                timer += 100;
+
+            }
+
+        }
+
+        }
     }
     public static void pagingLoop(Process[] processArray, int memSize){
 
-        Process[] beingProcessedArray = new Process[processArray.length];
-        int timer = 0;
-        boolean finished = false;
-        //add first on queue to process array slot 0
 
-        while(finished = false){
+        int biggestMemSize = processArray[0].finalLineArray[0];
 
-            //algorithm to place in memory
-            //subtract 100 from all in process array
-            for (int j = 0; j < processArray.length; j++){
+        for (int i = 0; i < processArray.length;i++){
 
+            for(int j = 0; j < processArray[i].finalLineArray.length; j++){
+                if(biggestMemSize < processArray[i].finalLineArray[j]){
+                    biggestMemSize = processArray[i].memTotal;
+                }
             }
-
-            if (processArray.length == 0){
-
-                printFile();
-
-            }
-
-            timer += 100;
 
         }
+
+        System.out.println("The biggest Mem Size: "+biggestMemSize);
+
+        int division = memSize / biggestMemSize;
+        int dExtra = memSize % biggestMemSize;
+        int processArraySize = division;
+        int remainderSize = 0;
+
+        if(dExtra > 0){
+
+            //processArraySize += 1;
+            remainderSize = memSize - (division * biggestMemSize);
+
+        }
+
+        System.out.println("There are "+division+" of memory slot size "+biggestMemSize);
+        if(dExtra > 0){
+           // System.out.println("and there is a memory slot size "+remainderSize);
+        }
+        System.out.println("For a total of "+processArraySize+" slots.");
+        System.out.println("");
+
+        Process[] beingProcessedArray = new Process[processArraySize];
+
+        //filewriter exitWrite
+        //if policy is 1 vsp_best.out
+        int memSlot = 0;
+        int timer = 0;
+        int memSizeLeft = memSize;
+        boolean finished = false;
+        int counter = 0;
+        //add first on queue to process array slot 0
+
+            beingProcessedArray[0] = processArray[0];
+            System.out.println("Process Number "+processArray[0].processNumber+" has been put into memory slot: 1 with MemSize: "+processArray[0].memTotal);
+            memSizeLeft -= processArray[0].memTotal;
+            processArray[0] = null;
+            timer += 100;
+
+            //write to file that first process enters memory
+
+            while (finished == false || timer == 100000) {
+
+
+
+
+                for(int i = 0; i < beingProcessedArray.length; i++){
+
+                    if(beingProcessedArray[i] != null) {
+
+                        beingProcessedArray[i].oneTimeUnit();
+
+                        if (beingProcessedArray[i].processLife == 0) {
+
+                            System.out.println("Process Number " + beingProcessedArray[i].processNumber + " has finished.");
+                            beingProcessedArray[i] = null;
+                            counter++;
+
+                            //print that this process left memory to file
+                        }
+                    }
+
+
+                }
+
+                for (int j = 0; j < processArray.length; j++) {
+
+                    if(processArray[j] != null){
+                        if(processArray[j].arrivalTime == 0){
+                            //add this to memory array
+                            for(int h = 0; h < beingProcessedArray.length; h++){
+                                if(beingProcessedArray[h] == null){
+                                    beingProcessedArray[h] = processArray[j];
+                                    System.out.println("Process Number "+processArray[j].processNumber +" has been put into memory slot: "+(h + 1));
+                                    processArray[j] = null;
+                                    break;
+
+                                }
+                            }
+
+                            //print that this was removed from the queue
+                        } else {
+
+                            processArray[j].arrivalTimeUnit();
+
+                        }
+
+                    }
+
+                }
+
+                timer += 100;
+                System.out.println("Timer: "+timer);
+                if (counter == processArray.length){
+                    finished = true;
+                }
+
+            }
+
     }
     public static void segmentationLoop(Process[] processArray, int memSize, int algPolicy){
 
@@ -105,8 +324,6 @@ public class Main {
     }
 
     public static void printFile(){}
-
-    //enque method
 
     public static Process[] readFile(File file){
 
