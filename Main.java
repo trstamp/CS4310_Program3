@@ -166,12 +166,10 @@ public class Main {
         //has the highest value.
         int largestIndex = -1;
         for(int i = 0; i < processArray.length; i++){
-            for(int j = 0; j < memSize.length; j++) {
-                if (j > 0){
-                    if(memSize[j] > memSize[j-1]) {
+            for(int j = 0; j < memSize.length; j++){
+                 if(memSize[j] > memSize[j-1]){
                         largestIndex = j;
-                    }
-                }
+                 }
             }
         }
 
